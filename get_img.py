@@ -1,5 +1,4 @@
 import os
-import sys
 import json
 from datetime import datetime
 
@@ -16,7 +15,7 @@ cursor = database.cursor()
 def get_acg():
     while True:
         try:
-            context = requests.get("https://api.lolicon.app/setu/v2?size=original&size=regular&r18=1").text
+            context = requests.get("https://api.lolicon.app/setu/v2?size=original&size=regular&r18=0").text
             pid = json.loads(context)['data'][0]['pid']
             name = json.loads(context)['data'][0]['title']
             rt = os.system(f"""wget https://pixiv.cat/{pid}.jpg""")
@@ -36,7 +35,6 @@ def get_wallpaper():
         try:
             rt = os.system(f"""wget -O wallpaper{num}.png https://unsplash.it/1920/1080?random""")
             if rt == 0:
-                img = Image.open(f"""./wallpaper{num}.png""")
                 cursor.execute("""INSERT INTO img VALUES (?, ?, ?, ?, ?, ?)""",
                                ("""wallpaper{num}""", 'wallpaper', 'png', f"""img/wallpaper{num}.png""", 1920, 1080))
                 database.commit()
@@ -48,23 +46,23 @@ def get_avatar():
     while True:
         num = int(round(datetime.now().timestamp() * 10000))
         try:
-            # Set-up a list of foreground colours (taken from Sigil).
-            foreground = [ "rgb(45,79,255)",
-               "rgb(254,180,44)",
-               "rgb(226,121,234)",
-               "rgb(30,179,253)",
-               "rgb(232,77,65)",
-               "rgb(49,203,115)",
-               "rgb(141,69,170)" ]
-
-            # Instantiate a generator that will create 5x5 block identicons using SHA1
+            # Set up a list of foreground colours (taken from Sigil).
+            foreground = ["rgb(45,79,255)",
+                          "rgb(254,180,44)",
+                          "rgb(226,121,234)",
+                          "rgb(30,179,253)",
+                          "rgb(232,77,65)",
+                          "rgb(49,203,115)",
+                          "rgb(141,69,170)"]
+            background = "rgb(254,254,254)"
+            # Instantiate a generator that will create 10x10 block identity icons using SHA1
             # digest.
-            generator = pydenticon.Generator(10, 10, foreground=foreground,background=background)
+            generator = pydenticon.Generator(10, 10, foreground=foreground, background=background)
             padding = (20, 20, 20, 20)
-            avatar = generator.generate(str(num), 240, 240, padding = padding, output_format="png")
-            avatarwrite = open(f"""avatar{num}.png""", "wb")
-            avatarwrite.write(avatar)
-            avatarwrite.close()
+            avatar = generator.generate(str(num), 240, 240, padding=padding, output_format="png")
+            avatar_write = open(f"""avatar{num}.png""", "wb")
+            avatar_write.write(avatar)
+            avatar_write.close()
             cursor.execute("""INSERT INTO img VALUES (?, ?, ?, ?, ?, ?)""",
                            (f"""avatar{num}""", 'avatar', 'png', f"""img/avatar{num}.png""", 240, 240))
             database.commit()

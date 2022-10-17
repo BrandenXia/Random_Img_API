@@ -37,15 +37,10 @@ def search(type: str = None, img_x: int = None, img_y: int = None):
     if img_y is not None:
         if img_y != "?":
             search_args.append(f"""img_y = \'{img_y}\'""")
-    print(search_args)
     if len(search_args) == 0:
-        print(1)
         res = cursor.execute("SELECT PATH, FORMAT FROM img")
     elif len(search_args) == 1:
-        print("SELECT PATH, FORMAT FROM img WHERE %s" % search_args[0])
         res = cursor.execute("SELECT PATH, FORMAT FROM img WHERE %s" % search_args[0])
-        print(res.fetchall())
     else:
-        print(3)
         res = cursor.execute("SELECT PATH, FORMAT FROM img WHERE %s" % " AND ".join(search_args))
     return res.fetchall()
