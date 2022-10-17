@@ -9,6 +9,8 @@ from src import dbo
 
 # init app
 app = FastAPI()
+# init database
+dbo.init()
 # create cursor
 if not os.path.exists("img"):
     os.mkdir("img")
