@@ -45,8 +45,7 @@ def get_wallpaper():
 
 def get_avatar():
     while True:
-        num = 0
-        num += 1
+        num = int(round(datetime.now().timestamp() * 10000))
         try:
             generator = pydenticon.Generator(10, 10)
             avatar = generator.generate(str(num), 240, 240)
@@ -59,26 +58,6 @@ def get_avatar():
         except KeyboardInterrupt:
             break
 
-def get_img():
-    os.chdir("img")
-    while True:
-        print("\nPrint in the type of image you want to get.")
-        print("1. acg")
-        print("2. wallpaper")
-        print("3. avatar")
-        print("4. exit")
-        choice = input("Enter choice: ")
-        print(choice)
-        if choice == "1":
-            get_acg()
-        elif choice == "2":
-            get_wallpaper()
-        elif choice == "3":
-            get_avatar()
-        elif choice == "4":
-            break
-        else:
-            print("Invalid choice")
 
 def init():
     os.chdir("img")
