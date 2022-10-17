@@ -60,6 +60,7 @@ def get_avatar():
             avatar_write.write(avatar)
             avatar_write.close()
             dbo.insert(f"""avatar{num}""", 'avatar', 'png', f"""img/avatar{num}.png""", 240, 240)
+            print(f"""create avatar{num}.png""")
         except KeyboardInterrupt:
             break
 
