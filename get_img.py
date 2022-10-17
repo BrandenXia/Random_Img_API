@@ -15,7 +15,7 @@ cursor = database.cursor()
 def get_acg():
     while True:
         try:
-            context = requests.get("https://api.lolicon.app/setu/v2?size=original&size=regular&r18=0").text
+            context = requests.get("https://api.lolicon.app/setu/v2?size=original&size=regular&r18=1").text
             pid = json.loads(context)['data'][0]['pid']
             name = json.loads(context)['data'][0]['title']
             rt = os.system(f"""wget https://pixiv.cat/{pid}.jpg""")
