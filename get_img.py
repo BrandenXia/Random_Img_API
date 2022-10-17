@@ -37,9 +37,8 @@ def get_wallpaper():
             rt = os.system(f"""wget -O wallpaper{num}.png https://unsplash.it/1920/1080?random""")
             if rt == 0:
                 img = Image.open(f"""./wallpaper{num}.png""")
-                img_x, img_y = img.size
                 cursor.execute("""INSERT INTO img VALUES (?, ?, ?, ?, ?, ?)""",
-                               ("""wallpaper{num}""", 'wallpaper', 'png', f"""img/wallpaper{num}.png""", img_x, img_y))
+                               ("""wallpaper{num}""", 'wallpaper', 'png', f"""img/wallpaper{num}.png""", 1920, 1080))
                 database.commit()
         except KeyboardInterrupt:
             break
