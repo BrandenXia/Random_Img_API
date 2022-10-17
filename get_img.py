@@ -91,7 +91,7 @@ def init():
             print("""Usage: get_img.py <options>
 Options: 
 	--acg       : Get good images
-	--avatar    : Get avatars
+	--avatar    : Generate avatars
 	--help      : Show this message
 	--wallpaper : Get wallpaper""")
         elif sys.argv[1] == "--acg":
@@ -101,7 +101,7 @@ Options:
         elif sys.argv[1] == "--wallpaper":
             get_wallpaper()
         else:
-            print("""Invalid choice
+            print("""Invalid argument
 "get_img.py --help" for help""")
         
         
