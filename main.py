@@ -2,17 +2,14 @@ from fastapi import FastAPI, Query
 from fastapi.responses import StreamingResponse
 from typing import Union
 from re import match
-import sqlite3
 from random import choice
 from enum import Enum
 import os
+from src import dbo
 
 # init app
 app = FastAPI()
-# connect to database
-database = sqlite3.connect("img_info.sqlite3")
 # create cursor
-cursor = database.cursor()
 if not os.path.exists("img"):
     os.mkdir("img")
 
@@ -34,22 +31,13 @@ async def main(type_filter: Union[str, None] = Query(default=None, max_length=10
     """
     # SELECT PATH, FORMAT FROM img [WHERE] [type = ""] [AND_1] [img_x = ""] [AND_2] [img_y = ""]
     print("type_filter: %s" % type_filter, "size: %s" % size)
-    search_args = []
-    if type_filter is not None:
-        search_args.append(f"""TYPE = \"{type_filter}\"""")
+    img_x = None
+    img_y = None
     if size is not None:
         match_size = match(r"([1-9]\d*|\?)x([1-9]\d*|\?)", size)
-        if match_size.group(1) != "?":
-            search_args.append(f"""img_x = \"{match_size.group(1)}\"""")
-        if match_size.group(2) != "?":
-            search_args.append(f"""img_y = \"{match_size.group(2)}\"""")
-    if len(search_args) == 0:
-        res = cursor.execute("SELECT PATH, FORMAT FROM img")
-    elif len(search_args) == 1:
-        res = cursor.execute("SELECT PATH, FORMAT FROM img WHERE %s" % search_args[0])
-    else:
-        print("SELECT PATH, FORMAT FROM img WHERE %s" % " AND ".join(search_args))
-        res = cursor.execute("SELECT PATH, FORMAT FROM img WHERE %s" % " AND ".join(search_args))
+        img_x = match_size.group(1)
+        img_y = match_size.group(2)
+    res = dbo.search(type=type_filter, img_x=img_x, img_y=img_y)
     try:
         img = choice(res.fetchall())
     except IndexError:

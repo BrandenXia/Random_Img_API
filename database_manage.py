@@ -1,31 +1,13 @@
-import sqlite3
+from src import dbo
 import os
 from PIL import Image
-
-# connect to database
-database = sqlite3.connect("img_info.sqlite3")
-# create cursor
-cursor = database.cursor()
-
-
-# initialize database
-def init():
-    # create table if not exists
-    try:
-        cursor.execute("""CREATE TABLE img (NAME text, TYPE text, FORMAT text, PATH text, img_x int, img_y int)""")
-        database.commit()
-        print("Table created")
-    except sqlite3.OperationalError:
-        print("Table already exists")
-    # change working directory
-    os.chdir("img")
 
 
 def scan_path():
     # get all files in path
     os_files = set(os.listdir())
     # get all files in database
-    db_files = set([i[0][4:] for i in cursor.execute("SELECT PATH FROM img").fetchall()])
+    db_files = set([i[0][4:] for i in dbo.search()])
     # get files to add
     add_files = os_files.difference(db_files)
     # get files to remove
@@ -47,24 +29,15 @@ def scan_path():
             # get image path
             path = "img/" + file
             # insert into database
-            cursor.execute("""INSERT INTO img VALUES (?, ?, ?, ?, ?, ?)""", (name, type, format, path, img_x, img_y))
-            database.commit()
+            dbo.insert(name, type, format, path, img_x, img_y)
             print("Added %s" % file)
         # remove files
         for file in remove_files:
             # get image path
             path = "img/" + file
             # remove from database
-            cursor.execute("DELETE FROM img WHERE PATH = ?", (path,))
-            database.commit()
+            dbo.delete(path)
             print("Removed %s" % file)
-
-
-def search():
-    # get search term
-    cursor.execute("""SELECT * FROM img""")
-    # show results
-    print(cursor.fetchall())
 
 
 def manage():
