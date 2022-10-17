@@ -1,8 +1,7 @@
 import os
-import sys
 import json
 from datetime import datetime
-
+from src import dbo
 import requests
 import argparse
 from PIL import Image
@@ -23,9 +22,7 @@ def get_acg():
             if rt == 0:
                 img = Image.open(f"""./{pid}.jpg""")
                 img_x, img_y = img.size
-                cursor.execute("""INSERT INTO img VALUES (?, ?, ?, ?, ?, ?)""",
-                               (name, 'acg', 'jpg', f"""img/{pid}.jpg""", img_x, img_y))
-                database.commit()
+                dbo.insert(name, "acg", "jpg", f"""img/{pid}.jpg""", img_x, img_y)
         except KeyboardInterrupt:
             break
 
@@ -36,11 +33,7 @@ def get_wallpaper():
         try:
             rt = os.system(f"""wget -O wallpaper{num}.png https://unsplash.it/1920/1080?random""")
             if rt == 0:
-                img = Image.open(f"""./wallpaper{num}.png""")
-                img_x, img_y = img.size
-                cursor.execute("""INSERT INTO img VALUES (?, ?, ?, ?, ?, ?)""",
-                               ("""wallpaper{num}""", 'wallpaper', 'png', f"""img/wallpaper{num}.png""", img_x, img_y))
-                database.commit()
+                dbo.insert(f"""wallpaper{num}""", 'wallpaper', 'png', f"""img/wallpaper{num}.png""", 1920, 1080)
         except KeyboardInterrupt:
             break
 
@@ -51,12 +44,11 @@ def get_avatar():
         try:
             generator = pydenticon.Generator(10, 10)
             avatar = generator.generate(str(num), 240, 240)
-            avatarwrite = open(f"""avatar{num}.png""", "wb")
-            avatarwrite.write(avatar)
-            avatarwrite.close()
-            cursor.execute("""INSERT INTO img VALUES (?, ?, ?, ?, ?, ?)""",
-                           (f"""avatar{num}""", 'avatar', 'png', f"""img/avatar{num}.png""", 240, 240))
-            database.commit()
+            avatar_write = open(f"""avatar{num}.png""", "wb")
+            avatar_write.write(avatar)
+            avatar_write.close()
+            dbo.insert(f"""avatar{num}""", 'avatar', 'png', f"""img/avatar{num}.png""", 240, 240)
+            print(f"""Created avatar{num}""")
         except KeyboardInterrupt:
             break
 
@@ -67,7 +59,6 @@ def arg_parse():
     parser.add_argument('--acg', action='store_true', help='Get good images')
     parser.add_argument('--wallpaper', action='store_true', help='Get wallpaper')
     parser.add_argument('--avatar', action='store_true', help='Generate avatars')
-    parser.add_argument('--size', )
     args = parser.parse_args()
     return args
 
