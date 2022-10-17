@@ -1,15 +1,17 @@
 import os
-import requests
-import sqlite3
 import sys
 import json
-import pydenticon
-from PIL import Image
 from datetime import datetime
 
+import requests
+import argparse
+from PIL import Image
+import sqlite3
+import pydenticon
 
 database = sqlite3.connect("img_info.sqlite3")
 cursor = database.cursor()
+
 
 def get_acg():
     while True:
@@ -53,37 +55,35 @@ def get_avatar():
             avatarwrite.write(avatar)
             avatarwrite.close()
             cursor.execute("""INSERT INTO img VALUES (?, ?, ?, ?, ?, ?)""",
-                          (f"""avatar{num}""", 'avatar', 'png', f"""img/avatar{num}.png""", 240, 240))
+                           (f"""avatar{num}""", 'avatar', 'png', f"""img/avatar{num}.png""", 240, 240))
             database.commit()
         except KeyboardInterrupt:
             break
 
 
+# Still need to improve the argues the
+def arg_parse():
+    parser = argparse.ArgumentParser(description='Get images from internet')
+    parser.add_argument('--acg', action='store_true', help='Get good images')
+    parser.add_argument('--avatar', action='store_true', help='Generate avatars')
+    parser.add_argument('--wallpaper', action='store_true', help='Get wallpaper')
+    parser.add_argument('--size', )
+    args = parser.parse_args()
+    return args
+
+
 def init():
     os.chdir("img")
-    if len(sys.argv) != 2:
-        print("""No options selected
-"get_img.py --help" for help""")
-        exit()
-    else:
-        if sys.argv[1] == "--help":
-            print("""Usage: get_img.py <options>
-Options: 
-	--acg       : Get good images
-	--avatar    : Generate avatars
-	--help      : Show this message
-	--wallpaper : Get wallpaper""")
-        elif sys.argv[1] == "--acg":
-            get_acg()
-        elif sys.argv[1] == "--avatar":
-            get_avatar()
-        elif sys.argv[1] == "--wallpaper":
-            get_wallpaper()
-        else:
-            print("""Invalid argument
-"get_img.py --help" for help""")
-        
-        
+    args = arg_parse()
+    # Will edit this part later
+    # Make it more flexible
+    if args.acg:
+        get_acg()
+    if args.avatar:
+        get_avatar()
+    if args.wallpaper:
+        get_wallpaper()
+
 
 if __name__ == "__main__":
     init()
