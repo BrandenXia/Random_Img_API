@@ -49,10 +49,14 @@ python get_img.py
 ```
 
 ### Usage
-- 1: acg
-- 2: wallpaper [not available yet]
-- 3: avatar [not available yet]
-- 4: exit
+```shell
+python get_img.py <options>
+```
+Options:
+- `--acg`: Get good images
+- `--avatar`: Get avatars
+- `--help`: Show this message
+- `--wallpaper`: Get wallpaper
 
 ## Todo
 - [ ] Add more download source

@@ -2,7 +2,7 @@ import sqlite3
 import os
 
 # connect to database
-database = sqlite3.connect("../img_info.sqlite3")
+database = sqlite3.connect("./img_info.sqlite3")
 cursor = database.cursor()
 
 
@@ -15,8 +15,6 @@ def init():
         print("Table created")
     except sqlite3.OperationalError:
         print("Table already exists")
-    # change working directory
-    os.chdir("./img")
 
 
 def insert(name: str, type: str, format: str, path: str, img_x: int, img_y: int):

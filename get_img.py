@@ -65,8 +65,8 @@ def get_avatar():
 def arg_parse():
     parser = argparse.ArgumentParser(description='Get images from internet')
     parser.add_argument('--acg', action='store_true', help='Get good images')
-    parser.add_argument('--avatar', action='store_true', help='Generate avatars')
     parser.add_argument('--wallpaper', action='store_true', help='Get wallpaper')
+    parser.add_argument('--avatar', action='store_true', help='Generate avatars')
     parser.add_argument('--size', )
     args = parser.parse_args()
     return args

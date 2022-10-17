@@ -39,7 +39,7 @@ async def main(type_filter: Union[str, None] = Query(default=None, max_length=10
         img_y = match_size.group(2)
     res = dbo.search(type=type_filter, img_x=img_x, img_y=img_y)
     try:
-        img = choice(res.fetchall())
+        img = choice(res)
     except IndexError:
         return {"error": "no image found"}
     file = open(img[0], "rb")

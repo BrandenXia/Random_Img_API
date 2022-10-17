@@ -77,3 +77,5 @@ fabric.properties
 log.txt
 
 __pycache__
+
+.DS_Store

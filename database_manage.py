@@ -38,34 +38,3 @@ def scan_path():
             # remove from database
             dbo.delete(path)
             print("Removed %s" % file)
-
-
-def manage():
-    while True:
-        # get user input
-        print("\n1. Rescan Path")
-        print("2. Search")
-        print("3. Exit")
-        choice = int(input("Enter choice: "))
-        # insert image
-        if choice == 1:
-            scan_path()
-            # search
-        elif choice == 2:
-            search()
-        # exit
-        elif choice == 3:
-            break
-        # invalid input
-        else:
-            print("Invalid choice")
-
-
-if __name__ == "__main__":
-    # initialize database
-    init()
-    # manage database
-    manage()
-    # close database and exit
-    cursor.close()
-    database.close()
