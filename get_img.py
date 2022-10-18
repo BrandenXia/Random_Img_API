@@ -67,11 +67,10 @@ def get_avatar():
 
 # Still need to improve the argues the
 def arg_parse():
-    parser = argparse.ArgumentParser(description='Get images from internet')
-    parser.add_argument('--acg', action='store_true', help='Get good images')
-    parser.add_argument('--wallpaper', action='store_true', help='Get wallpaper')
-    parser.add_argument('--avatar', action='store_true', help='Generate avatars')
-    parser.add_argument('--size', )
+    parser = argparse.ArgumentParser(description='get images from internet')
+    parser.add_argument('--acg', action='store_true', help='get good images')
+    parser.add_argument('--wallpaper', action='store_true', help='get wallpaper')
+    parser.add_argument('--avatar', action='store_true', help='generate avatars')
     args = parser.parse_args()
     return args
 
