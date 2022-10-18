@@ -33,18 +33,18 @@ pip install -r requirements.txt
 ## Image download
 
 ```shell
-python get_img.py
+python download_img.py
 ```
 
 ### Usage
 ```shell
-python get_img.py <options>
+python download_img.py <options>
 ```
 Options:
 - `--acg`: Get good images
+- `--wallpaper`: Get wallpapers
 - `--avatar`: Get avatars
 - `--help`: Show this message
-- `--wallpaper`: Get wallpaper
 
 ## Todo
 - [ ] Add more download source
