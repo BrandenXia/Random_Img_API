@@ -27,7 +27,7 @@ def delete(path: str):
     database.commit()
 
 
-def search(type: str = None, img_x: int = None, img_y: int = None):
+def search(type: str = None, img_x: int = None, img_y: int = None, needed: str = "*"):
     search_args = []
     if type is not None:
         search_args.append(f"""TYPE = \'{type}\'""")
@@ -38,9 +38,9 @@ def search(type: str = None, img_x: int = None, img_y: int = None):
         if img_y != "?":
             search_args.append(f"""img_y = \'{img_y}\'""")
     if len(search_args) == 0:
-        res = cursor.execute("SELECT PATH, FORMAT FROM img")
+        res = cursor.execute("SELECT %s FROM img" % needed)
     elif len(search_args) == 1:
-        res = cursor.execute("SELECT PATH, FORMAT FROM img WHERE %s" % search_args[0])
+        res = cursor.execute("SELECT %s FROM img WHERE %s" % needed, search_args[0])
     else:
-        res = cursor.execute("SELECT PATH, FORMAT FROM img WHERE %s" % " AND ".join(search_args))
+        res = cursor.execute("SELECT %s FROM img WHERE %s" % needed, " AND ".join(search_args))
     return res.fetchall()
