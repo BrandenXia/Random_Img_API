@@ -23,6 +23,7 @@ def get_acg():
                 img = Image.open(f"""./{pid}.jpg""")
                 img_x, img_y = img.size
                 dbo.insert(name, "acg", "jpg", f"""img/{pid}.jpg""", img_x, img_y)
+                img.close()
         except KeyboardInterrupt:
             break
 

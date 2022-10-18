@@ -44,3 +44,7 @@ def search(type: str = None, img_x: int = None, img_y: int = None):
     else:
         res = cursor.execute("SELECT PATH, FORMAT FROM img WHERE %s" % " AND ".join(search_args))
     return res.fetchall()
+
+
+cursor.close()
+database.close()

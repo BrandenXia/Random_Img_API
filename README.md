@@ -30,18 +30,6 @@ pip install -r requirements.txt
 ./end.sh
 ```
 
-## Database management
-
-```shell
-python database_manage.py
-```
-
-### Usage
-
-- 1: rescan path, detect file changes and update database
-- 2: display database
-- 3: exit
-
 ## Image download
 
 ```shell
