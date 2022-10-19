@@ -6,7 +6,7 @@ Project for learning FastAPI.
 
 ## Available parameters
 
-- size: [num | ?]x[num | ?]
+- size: [positive integer | ?]x[positive integer | ?]
     - example: 100x100, 100x?, ?x100
     - default: ?x?
 - type: [acg | wallpaper | avatar]
