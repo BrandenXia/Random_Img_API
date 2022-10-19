@@ -20,21 +20,25 @@ if not os.path.exists("img"):
 async def main(type_filter: Union[str, None] = Query(default=None, max_length=10, regex=r"^(acg|wallpaper|avatar)$"),
                size: Union[str, None] = Query(default=None, max_length=10, regex=r"^([1-9]\d*|\?)x([1-9]\d*|\?)$")):
     """
-    available parameters:
-    type_filter: filter by type, default is none, accepts string, available options are "acg", "wallpaper", "avatar"
-    size: filter by size, default is none, accepts context string, format is [Number | ?]x[Number | ?], e.g. 1920x1080
+    :param type_filter: type of image (acg / wallpaper / avatar)
+    :param size: size of image (width x height)
+    :return: error message if error occurred, else image
     """
-    # SELECT PATH, FORMAT FROM img [WHERE] [type = ""] [AND_1] [img_x = ""] [AND_2] [img_y = ""]
+    # print type_filter and size
     print("type_filter: %s" % type_filter, "size: %s" % size)
     img_x = None
     img_y = None
+    # if size is not None, split it
     if size is not None:
         match_size = match(r"([1-9]\d*|\?)x([1-9]\d*|\?)", size)
         img_x = match_size.group(1)
         img_y = match_size.group(2)
+    # get image from database
     res = dbo.search(type=type_filter, img_x=img_x, img_y=img_y, needed="PATH,FORMAT")
     try:
+        # get random image
         img = choice(res)
+    # if no image found, return error message
     except IndexError:
         return {"error": "no image found"}
     file = open(img[0], "rb")
@@ -45,16 +49,27 @@ async def main(type_filter: Union[str, None] = Query(default=None, max_length=10
 @app.get("/json/")
 async def json(type_filter: Union[str, None] = Query(default=None, max_length=10, regex=r"^(acg|wallpaper|avatar)$"),
                size: Union[str, None] = Query(default=None, max_length=10, regex=r"^([1-9]\d*|\?)x([1-9]\d*|\?)$")):
+    """
+    :param type_filter: type of image (acg / wallpaper / avatar)
+    :param size: size of image (width x height)
+    :return: error message if error occurred, else json
+    """
+    # print type_filter and size
     print("type_filter: %s" % type_filter, "size: %s" % size)
     img_x = None
     img_y = None
+    # if size is not None, split it
     if size is not None:
         match_size = match(r"([1-9]\d*|\?)x([1-9]\d*|\?)", size)
         img_x = match_size.group(1)
         img_y = match_size.group(2)
+    # get image from database
     res = dbo.search(type=type_filter, img_x=img_x, img_y=img_y, needed="NAME, TYPE, IMG_X, IMG_Y")
     try:
+        # get random image
         img = choice(res)
+    # if no image found, return error message
     except IndexError:
         return {"error": "no image found"}
+    # return json
     return [{"name": img[0], "type": img[1], "img_x": img[2], "img_y": img[3]}]
