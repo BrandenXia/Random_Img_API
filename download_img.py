@@ -1,5 +1,5 @@
 import os
-import json
+from json import loads
 from datetime import datetime
 from src import dbo
 import requests
@@ -16,13 +16,13 @@ def get_acg():
     while True:
         try:
             context = requests.get("https://api.lolicon.app/setu/v2").text
-            pid = json.loads(context)['data'][0]['pid']
-            name = json.loads(context)['data'][0]['title']
-            rt = os.system(f"""wget https://pixiv.cat/{pid}.jpg""")
+            pid = loads(context)['data'][0]['pid']
+            name = loads(context)['data'][0]['title']
+            rt = os.system("wget https://pixiv.cat/%d.jpg" % (pid,))
             if rt == 0:
-                img = Image.open(f"""./{pid}.jpg""")
+                img = Image.open("./%d.jpg" % (pid,))
                 img_x, img_y = img.size
-                dbo.insert(name, "acg", "jpg", f"""img/{pid}.jpg""", img_x, img_y)
+                dbo.insert(name, "acg", "jpg", "img/%d.jpg" % (pid,), img_x, img_y)
                 img.close()
         except KeyboardInterrupt:
             break
@@ -32,9 +32,9 @@ def get_wallpaper():
     while True:
         num = int(round(datetime.now().timestamp() * 10000))
         try:
-            rt = os.system(f"""wget -O wallpaper{num}.png https://unsplash.it/1920/1080?random""")
+            rt = os.system("wget -O wallpaper%d.png https://unsplash.it/1920/1080?random" % (num,))
             if rt == 0:
-                dbo.insert(f"""wallpaper{num}""", 'wallpaper', 'png', f"""img/wallpaper{num}.png""", 1920, 1080)
+                dbo.insert("wallpaper%d" % (num,), 'wallpaper', 'png', "img/wallpaper%d.png" % (num,), 1920, 1080)
         except KeyboardInterrupt:
             break
 
@@ -57,11 +57,11 @@ def get_avatar():
             generator = pydenticon.Generator(10, 10, foreground=foreground, background=background)
             padding = (20, 20, 20, 20)
             avatar = generator.generate(str(num), 240, 240, padding=padding, output_format="png")
-            avatar_write = open(f"""avatar{num}.png""", "wb")
+            avatar_write = open("avatar%d.png" % (num,), "wb")
             avatar_write.write(avatar)
             avatar_write.close()
-            dbo.insert(f"""avatar{num}""", 'avatar', 'png', f"""img/avatar{num}.png""", 240, 240)
-            print(f"""avatar{num}.png generated""")
+            dbo.insert("avatar%d" % (num,), 'avatar', 'png', "img/avatar%d.png" % (num,), 240, 240)
+            print("avatar%d.png generated" % (num,))
         except KeyboardInterrupt:
             break
 

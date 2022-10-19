@@ -32,7 +32,7 @@ async def main(type_filter: Union[str, None] = Query(default=None, max_length=10
         match_size = match(r"([1-9]\d*|\?)x([1-9]\d*|\?)", size)
         img_x = match_size.group(1)
         img_y = match_size.group(2)
-    res = dbo.search(type=type_filter, img_x=img_x, img_y=img_y, needed="PATH, FORMAT")
+    res = dbo.search(type=type_filter, img_x=img_x, img_y=img_y, needed="PATH,FORMAT")
     try:
         img = choice(res)
     except IndexError:
