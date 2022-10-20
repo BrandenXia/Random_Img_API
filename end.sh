@@ -1,3 +1,3 @@
 #!/bin/bash
 # Stop the server
-kill $(ps aux | grep 'uvicorn main:app' | awk '{print $2}')
+kill "$(pgrep -f -l 'uvicorn main:app --port 8045 --reload' | awk '{print $1}')"

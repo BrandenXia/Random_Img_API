@@ -46,6 +46,13 @@ Options:
 - `--avatar`: Get avatars
 - `--help`: Show this message
 
+### Warning
+There is a bug that sometimes the program will download images which size is 0 kb when using `--wallpaper` option. 
+You can delete these images by using the following command:
+```shell
+find . -name "*" -type f -size 0c | xargs -n 1 rm -f
+```
+
 ## Todo
 - [ ] Add more download source
 - [ ] Add more available parameters
