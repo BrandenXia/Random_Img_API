@@ -29,7 +29,7 @@ def insert(name: str, type: str, format: str, path: str, img_x: int, img_y: int)
     :param img_y: height of image
     :return: error message if error occurred, else None
     """
-    cursor.execute("INSERT INTO img VALUES (%s, %s, %s, %s, %d, %d)" % (name, type, format, path, img_x, img_y,))
+    cursor.execute("INSERT INTO img VALUES ('%s', '%s', '%s', '%s', '%d', '%d')" % (name, type, format, path, img_x, img_y,))
     database.commit()
 
 
@@ -38,7 +38,7 @@ def delete(path: str):
     :param path: the path of image to be deleted
     :return: error message if error occurred, else None
     """
-    cursor.execute("DELETE FROM img WHERE PATH = %s" % (path,))
+    cursor.execute("DELETE FROM img WHERE PATH = '%s'" % (path,))
     database.commit()
 
 
