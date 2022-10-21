@@ -3,12 +3,12 @@ from json import loads
 from datetime import datetime
 from src import dbo, config
 import requests
-import argparse
 from PIL import Image
 import pydenticon
 
 # define global variables
 download_path = ""
+r18 = None
 
 
 def get_acg() -> None:
@@ -18,7 +18,7 @@ def get_acg() -> None:
     while True:
         try:
             # get context from web
-            context = requests.get("https://api.lolicon.app/setu/v2").text
+            context = requests.get("https://api.lolicon.app/setu/v2?r18=" + str(r18)).text
             # get name and pid information
             pid = loads(context)['data'][0]['pid']
             name = loads(context)['data'][0]['title']
@@ -47,7 +47,8 @@ def get_wallpaper() -> None:
             rt = os.system("wget -O wallpaper%d.png https://unsplash.it/1920/1080?random" % (num,))
             # insert image into database
             if rt == 0:
-                dbo.insert("wallpaper%d" % (num,), 'wallpaper', 'png', os.path.join(download_path, "wallpaper%d.png") % (num,), 1920, 1080)
+                dbo.insert("wallpaper%d" % (num,), 'wallpaper', 'png', os.path.join(download_path, "wallpaper%d.png") %
+                           (num,), 1920, 1080)
         # stop if interrupted
         except KeyboardInterrupt:
             break
@@ -78,47 +79,26 @@ def get_avatar() -> None:
             avatar_write.write(avatar)
             avatar_write.close()
             # insert image into database
-            dbo.insert("avatar%d" % (num,), 'avatar', 'png', os.path.join(download_path, "avatar%d.png") % (num,), 240, 240)
+            dbo.insert("avatar%d" % (num,), 'avatar', 'png', os.path.join(download_path, "avatar%d.png") % (num,), 240,
+                       240)
             print("avatar%d.png generated" % (num,))
         except KeyboardInterrupt:
             break
-
-
-# Still need to improve this part
-def arg_parse() -> argparse.Namespace:
-    """
-    parse arguments from command line
-    """
-    parser = argparse.ArgumentParser(description='get images from internet')
-    parser.add_argument('--acg', action='store_true', help='get good images')
-    parser.add_argument('--wallpaper', action='store_true', help='get wallpaper')
-    parser.add_argument('--avatar', action='store_true', help='generate avatars')
-    args = parser.parse_args()
-    return args
 
 
 def init() -> None:
     """
     go to download directory, initialize database, and get arguments from command line
     """
-    global download_path
+    global download_path, r18
     # read config file
     download_config = config.Config("download.json")
     download_path = download_config.get("download_path")
+    r18 = download_config.get("r18")
     # go to download directory
     os.chdir(download_path)
     # initialize database
     dbo.init()
-    # get arguments from command line
-    args = arg_parse()
-    # Will edit this part later
-    # Make it more flexible
-    if args.acg:
-        get_acg()
-    if args.avatar:
-        get_avatar()
-    if args.wallpaper:
-        get_wallpaper()
 
 
 if __name__ == "__main__":

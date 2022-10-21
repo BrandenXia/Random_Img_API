@@ -1,4 +1,5 @@
 {
   "download_path": "img",
-  "database_name": "img_info.sqlite3"
+  "database_name": "img_info.sqlite3",
+  "r18": 2
 }
