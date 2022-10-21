@@ -7,10 +7,11 @@ import argparse
 from PIL import Image
 import pydenticon
 
+# define global variables
 download_path = ""
 
 
-def get_acg():
+def get_acg() -> None:
     """
     download acg images from api.lolicon.app
     """
@@ -34,7 +35,7 @@ def get_acg():
             break
 
 
-def get_wallpaper():
+def get_wallpaper() -> None:
     """
     download wallpaper from unsplash.it
     """
@@ -52,7 +53,7 @@ def get_wallpaper():
             break
 
 
-def get_avatar():
+def get_avatar() -> None:
     """
     generate avatars with pydenticon
     """
@@ -84,7 +85,7 @@ def get_avatar():
 
 
 # Still need to improve this part
-def arg_parse():
+def arg_parse() -> argparse.Namespace:
     """
     parse arguments from command line
     """
@@ -96,7 +97,7 @@ def arg_parse():
     return args
 
 
-def init():
+def init() -> None:
     """
     go to download directory, initialize database, and get arguments from command line
     """

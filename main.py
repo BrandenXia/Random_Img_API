@@ -14,7 +14,8 @@ dbo.init()
 # app routes
 @app.get("/")
 async def main(type: Union[str, None] = Query(default=None, max_length=10, regex=r"^(acg|wallpaper|avatar)$"),
-               size: Union[str, None] = Query(default=None, max_length=10, regex=r"^([1-9]\d*|\?)x([1-9]\d*|\?)$")):
+               size: Union[str, None] = Query(default=None, max_length=10, regex=r"^([1-9]\d*|\?)x([1-9]\d*|\?)$")
+               ) -> StreamingResponse:
     """
     :param type: type of image (acg / wallpaper / avatar)
     :param size: size of image (width x height)
@@ -44,7 +45,8 @@ async def main(type: Union[str, None] = Query(default=None, max_length=10, regex
 
 @app.get("/json/")
 async def json(type: Union[str, None] = Query(default=None, max_length=10, regex=r"^(acg|wallpaper|avatar)$"),
-               size: Union[str, None] = Query(default=None, max_length=10, regex=r"^([1-9]\d*|\?)x([1-9]\d*|\?)$")):
+               size: Union[str, None] = Query(default=None, max_length=10, regex=r"^([1-9]\d*|\?)x([1-9]\d*|\?)$")
+               ) -> dict:
     """
     :param type: type of image (acg / wallpaper / avatar)
     :param size: size of image (width x height)
@@ -68,4 +70,4 @@ async def json(type: Union[str, None] = Query(default=None, max_length=10, regex
     except IndexError:
         return {"error": "no image found"}
     # return json
-    return [{"name": img[0], "type": img[1], "img_x": img[2], "img_y": img[3]}]
+    return {"name": img[0], "type": img[1], "img_x": img[2], "img_y": img[3]}

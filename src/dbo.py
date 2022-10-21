@@ -14,7 +14,7 @@ cursor = database.cursor()
 
 
 # initialize database
-def init():
+def init() -> None:
     """
     initialize database
     """
@@ -27,7 +27,7 @@ def init():
         print("Table already exists")
 
 
-def insert(name: str, type: str, format: str, path: str, img_x: int, img_y: int):
+def insert(name: str, type: str, format: str, path: str, img_x: int, img_y: int) -> None:
     """
     :param name: name of image
     :param type: type of image (acg / wallpaper / avatar)
@@ -41,7 +41,7 @@ def insert(name: str, type: str, format: str, path: str, img_x: int, img_y: int)
     database.commit()
 
 
-def delete(path: str):
+def delete(path: str) -> None:
     """
     :param path: the path of image to be deleted
     :return: error message if error occurred, else None
@@ -50,7 +50,7 @@ def delete(path: str):
     database.commit()
 
 
-def search(type: str = None, img_x: int = None, img_y: int = None, needed: str = "*"):
+def search(type: str = None, img_x: int = None, img_y: int = None, needed: str = "*") -> list:
     """
     :param type: type of image (acg / wallpaper / avatar)
     :param img_x: width of image
