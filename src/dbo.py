@@ -1,7 +1,15 @@
 import sqlite3
+from src import config
+import os
 
+# Create database directory if not exists
+if not os.path.exists("database"):
+    os.makedirs("database")
+# read database config
+database_config = config.Config("database.json")
+database_name = database_config.get("database_name")
 # connect to database
-database = sqlite3.connect("./img_info.sqlite3")
+database = sqlite3.connect(os.path.join("database", database_name))
 cursor = database.cursor()
 
 

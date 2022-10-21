@@ -16,4 +16,9 @@ __pycache__
 # Testing
 img
 logs
-img_info.sqlite3
+database
+config
+test.py
+
+# Working
+working/img_info.sqlite3

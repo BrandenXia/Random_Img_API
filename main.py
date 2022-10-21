@@ -3,29 +3,25 @@ from fastapi.responses import StreamingResponse
 from typing import Union
 from re import match
 from random import choice
-import os
 from src import dbo
 
 # init app
 app = FastAPI()
 # init database
 dbo.init()
-# create cursor
-if not os.path.exists("img"):
-    os.mkdir("img")
 
 
 # app routes
 @app.get("/")
-async def main(type_filter: Union[str, None] = Query(default=None, max_length=10, regex=r"^(acg|wallpaper|avatar)$"),
+async def main(type: Union[str, None] = Query(default=None, max_length=10, regex=r"^(acg|wallpaper|avatar)$"),
                size: Union[str, None] = Query(default=None, max_length=10, regex=r"^([1-9]\d*|\?)x([1-9]\d*|\?)$")):
     """
-    :param type_filter: type of image (acg / wallpaper / avatar)
+    :param type: type of image (acg / wallpaper / avatar)
     :param size: size of image (width x height)
     :return: error message if error occurred, else image
     """
     # print type_filter and size
-    print("type_filter: %s" % type_filter, "size: %s" % size)
+    print("type_filter: %s" % type, "size: %s" % size)
     img_x = None
     img_y = None
     # if size is not None, split it
@@ -34,7 +30,7 @@ async def main(type_filter: Union[str, None] = Query(default=None, max_length=10
         img_x = match_size.group(1)
         img_y = match_size.group(2)
     # get image from database
-    res = dbo.search(type=type_filter, img_x=img_x, img_y=img_y, needed="PATH,FORMAT")
+    res = dbo.search(type=type, img_x=img_x, img_y=img_y, needed="PATH,FORMAT")
     try:
         # get random image
         img = choice(res)
@@ -47,15 +43,15 @@ async def main(type_filter: Union[str, None] = Query(default=None, max_length=10
 
 
 @app.get("/json/")
-async def json(type_filter: Union[str, None] = Query(default=None, max_length=10, regex=r"^(acg|wallpaper|avatar)$"),
+async def json(type: Union[str, None] = Query(default=None, max_length=10, regex=r"^(acg|wallpaper|avatar)$"),
                size: Union[str, None] = Query(default=None, max_length=10, regex=r"^([1-9]\d*|\?)x([1-9]\d*|\?)$")):
     """
-    :param type_filter: type of image (acg / wallpaper / avatar)
+    :param type: type of image (acg / wallpaper / avatar)
     :param size: size of image (width x height)
     :return: error message if error occurred, else json
     """
     # print type_filter and size
-    print("type_filter: %s" % type_filter, "size: %s" % size)
+    print("type_filter: %s" % type, "size: %s" % size)
     img_x = None
     img_y = None
     # if size is not None, split it
@@ -64,7 +60,7 @@ async def json(type_filter: Union[str, None] = Query(default=None, max_length=10
         img_x = match_size.group(1)
         img_y = match_size.group(2)
     # get image from database
-    res = dbo.search(type=type_filter, img_x=img_x, img_y=img_y, needed="NAME, TYPE, IMG_X, IMG_Y")
+    res = dbo.search(type=type, img_x=img_x, img_y=img_y, needed="NAME, TYPE, IMG_X, IMG_Y")
     try:
         # get random image
         img = choice(res)
