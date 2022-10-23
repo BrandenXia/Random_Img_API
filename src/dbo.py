@@ -1,6 +1,7 @@
 import sqlite3
-from src import config
 import os
+
+from src import config
 
 # Create database directory if not exists
 if not os.path.exists("database"):

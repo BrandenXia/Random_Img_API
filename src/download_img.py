@@ -1,10 +1,12 @@
 import os
+import requests
+import pydenticon
+
 from json import loads
 from datetime import datetime
-from src import dbo, config
-import requests
 from PIL import Image
-import pydenticon
+
+from src import dbo, config
 
 # define global variables
 download_path = ""

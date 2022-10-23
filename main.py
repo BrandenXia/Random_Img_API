@@ -3,6 +3,7 @@ from fastapi.responses import StreamingResponse
 from typing import Union
 from re import match
 from random import choice
+
 from src import dbo
 
 # init app
@@ -21,8 +22,6 @@ async def main(type: Union[str, None] = Query(default=None, max_length=10, regex
     :param size: size of image (width x height)
     :return: error message if error occurred, else image
     """
-    # print type_filter and size
-    print("type_filter: %s" % type, "size: %s" % size)
     img_x = None
     img_y = None
     # if size is not None, split it
@@ -53,7 +52,6 @@ async def json(type: Union[str, None] = Query(default=None, max_length=10, regex
     :return: error message if error occurred, else json
     """
     # print type_filter and size
-    print("type_filter: %s" % type, "size: %s" % size)
     img_x = None
     img_y = None
     # if size is not None, split it

@@ -1,13 +1,15 @@
 import json
 import os
 
+from typing import Any
+
 # If config directory doesn't exist, create it
 if not os.path.exists("config"):
     os.mkdir("config")
 
 
 # If config file doesn't have a value, read it from the default config file
-def get_default(key: str):
+def get_default(key: str) -> Any:
     with open("default.json", "r", encoding="utf-8") as f:
         default = json.load(f)
     return default[key]
@@ -30,7 +32,7 @@ class Config:
                 json.dump({}, f, indent=4)
                 self.config = {}
 
-    def get(self, key: str):
+    def get(self, key: str) -> Any:
         """
         :param key: key to get from config
         :return: value of key, if key doesn't exist, return default value
@@ -40,7 +42,7 @@ class Config:
         except KeyError:
             return get_default(key)
 
-    def set(self, key: str, value) -> None:
+    def set(self, key: str, value: Any) -> None:
         """
         :param key: key to set
         :param value: value to set

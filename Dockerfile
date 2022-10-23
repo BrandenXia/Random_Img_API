@@ -10,4 +10,4 @@ EXPOSE 8000
 
 VOLUME /img
 
-CMD uvicorn main:app --port 8045
+CMD gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8045 > ./logs/"$now".log 2>&1 &
