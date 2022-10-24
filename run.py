@@ -40,7 +40,7 @@ if __name__ == '__main__':
         os.mkdir('logs')
 
     intercept_handler = RichHandler(rich_tracebacks=True)
-    logging.basicConfig(handlers=[intercept_handler], level=logging.INFO)
+    logging.basicConfig(handlers=[intercept_handler], level=logging.INFO, format='%(message)s')
     logging.root.handlers = [intercept_handler]
     logging.root.setLevel(logging.INFO)
 

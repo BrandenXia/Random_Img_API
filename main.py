@@ -16,7 +16,7 @@ dbo.init()
 @app.get("/")
 async def main(type: Union[str, None] = Query(default=None, max_length=10, regex=r"^(acg|wallpaper|avatar)$"),
                size: Union[str, None] = Query(default=None, max_length=10, regex=r"^([1-9]\d*|\?)x([1-9]\d*|\?)$")
-               ) -> StreamingResponse:
+               ) -> StreamingResponse or dict:
     """
     :param type: type of image (acg / wallpaper / avatar)
     :param size: size of image (width x height)
