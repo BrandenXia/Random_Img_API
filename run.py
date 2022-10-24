@@ -1,9 +1,23 @@
+import logging
 import multiprocessing
 import os
 
 from gunicorn.app.base import BaseApplication
+from gunicorn.glogging import Logger
+from rich.logging import RichHandler
 
 from main import app
+
+
+class StubbedGunicornLogger(Logger):
+    def setup(self, cfg):
+        handler = logging.NullHandler()
+        self.error_logger = logging.getLogger("gunicorn.error")
+        self.error_logger.addHandler(handler)
+        self.access_logger = logging.getLogger("gunicorn.access")
+        self.access_logger.addHandler(handler)
+        self.error_logger.setLevel(logging.INFO)
+        self.access_logger.setLevel(logging.INFO)
 
 
 class StandaloneApplication(BaseApplication):
@@ -13,8 +27,7 @@ class StandaloneApplication(BaseApplication):
         super(StandaloneApplication, self).__init__()
 
     def load_config(self):
-        config = dict([(key, value) for key, value in self.options.items()
-                       if key in self.cfg.settings and value is not None])
+        config = {key: value for key, value in self.options.items() if key in self.cfg.settings and value is not None}
         for key, value in config.items():
             self.cfg.set(key.lower(), value)
 
@@ -26,6 +39,25 @@ if __name__ == '__main__':
     if not os.path.exists('logs'):
         os.mkdir('logs')
 
+    intercept_handler = RichHandler(rich_tracebacks=True)
+    logging.basicConfig(handlers=[intercept_handler], level=logging.INFO)
+    logging.root.handlers = [intercept_handler]
+    logging.root.setLevel(logging.INFO)
+
+    seen = set()
+    for name in [
+        *logging.root.manager.loggerDict.keys(),
+        "gunicorn",
+        "gunicorn.access",
+        "gunicorn.error",
+        "uvicorn",
+        "uvicorn.access",
+        "uvicorn.error",
+    ]:
+        if name not in seen:
+            seen.add(name.split(".")[0])
+            logging.getLogger(name).handlers = [intercept_handler]
+
     options = {
         "bind": "0.0.0.0:8045",
         "workers": multiprocessing.cpu_count() * 2 + 1,
@@ -35,10 +67,7 @@ if __name__ == '__main__':
         "workers_connections": 1000,
         "accesslog": "-",
         "errorlog": "-",
-        "logconfig_dict": {
-            "level": "INFO",
-            "format": '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"',
-        },
+        "logger_class": StubbedGunicornLogger,
         "preload_app": True
     }
 
