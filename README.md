@@ -31,15 +31,15 @@ pip install -r requirements.txt
 ./end.sh
 ```
 
-## Image download
+## Image download [Not available yet]
 
 ```shell
-python download_img.py
+python get_img_url.py
 ```
 
 ### Usage
 ```shell
-python download_img.py <options>
+python get_img_url.py <options>
 ```
 Options:
 - `--acg`: Get good images
@@ -77,7 +77,10 @@ find . -name "*" -type f -size 0c | xargs -n 1 rm -f
     - [x] change database path
     - [ ] change config using command line
     - [ ] change database using command line
+  - [ ] change structure of image download
+- [ ] make a download progress bar with rich
 - [ ] use ai to generate images
+- [x] add colored log
 - [x] add more comments
 - [ ] add rsa protection or protection according to ip
 - [ ] change return url so that people will be able to review what they just look at

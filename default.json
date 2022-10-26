@@ -1,5 +1,10 @@
 {
   "download_path": "img",
+  "connection_num": 8,
+
+  "r18": 2,
+
   "database_name": "img_info.sqlite3",
-  "r18": 2
+
+  "log_level": "INFO"
 }

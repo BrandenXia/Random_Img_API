@@ -7,6 +7,7 @@ from gunicorn.glogging import Logger
 from rich.logging import RichHandler
 
 from main import app
+from src import config
 
 
 class StubbedGunicornLogger(Logger):
@@ -36,11 +37,14 @@ class StandaloneApplication(BaseApplication):
 
 
 if __name__ == '__main__':
+    log_config = config.Config("log.json")
+    log_level = log_config.get("log_level")
+
     if not os.path.exists('logs'):
         os.mkdir('logs')
 
     intercept_handler = RichHandler(rich_tracebacks=True)
-    logging.basicConfig(handlers=[intercept_handler], level=logging.INFO, format='%(message)s')
+    logging.basicConfig(handlers=[intercept_handler], level=log_level, format='%(message)s')
     logging.root.handlers = [intercept_handler]
     logging.root.setLevel(logging.INFO)
 
