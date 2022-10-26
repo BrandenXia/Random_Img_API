@@ -1,5 +1,6 @@
 import requests
 import os
+import time
 import multitasking
 
 from rich.progress import Progress
@@ -18,10 +19,15 @@ headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 
 def split(file_size: int, connection: int) -> list[tuple[int, int]]:
     step = file_size // connection + 1
-    rt = []
-    for i in range(0, file_size, step):
-        rt.append((i, min(i + step, file_size)))
-    return rt
+    download_range = []
+    for i in range(0, connection):
+        start = i * step
+        end = start + step - 1
+        if end > file_size:
+            end = file_size
+        download_range.append((start, end))
+    return download_range
+
 
 def download(url: str, path: str, filename: str) -> None:
     header = requests.head(url, headers=headers)
@@ -52,7 +58,6 @@ def download(url: str, path: str, filename: str) -> None:
             for data in response.iter_content(chunk_size=chunk_size):
                 chunks.append(data)
                 progress.update(task, advance=chunk_size)
-
             file.seek(start)
             for chunk in chunks:
                 file.write(chunk)
@@ -60,6 +65,6 @@ def download(url: str, path: str, filename: str) -> None:
         download_range = split(file_size, connection_num)
         for start, end in download_range:
             download_thread(start, end)
+            time.sleep(0.01)
         multitasking.wait_for_tasks()
     file.close()
-
