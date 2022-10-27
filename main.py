@@ -31,6 +31,7 @@ async def main(type: Union[str, None] = Query(default=None, max_length=10, regex
         img_y = match_size.group(2)
     # get image from database
     res = dbo.search(type=type, img_x=img_x, img_y=img_y, needed="PATH,FORMAT")
+
     try:
         # get random image
         img = choice(res)
@@ -38,6 +39,7 @@ async def main(type: Union[str, None] = Query(default=None, max_length=10, regex
     except IndexError:
         return {"error": "no image found"}
     file = open(img[0], "rb")
+
     # return image
     return StreamingResponse(file, media_type="image/" + img[1].lower())
 
@@ -51,7 +53,6 @@ async def json(type: Union[str, None] = Query(default=None, max_length=10, regex
     :param size: size of image (width x height)
     :return: error message if error occurred, else json
     """
-    # print type_filter and size
     img_x = None
     img_y = None
     # if size is not None, split it
@@ -61,11 +62,13 @@ async def json(type: Union[str, None] = Query(default=None, max_length=10, regex
         img_y = match_size.group(2)
     # get image from database
     res = dbo.search(type=type, img_x=img_x, img_y=img_y, needed="NAME, TYPE, IMG_X, IMG_Y")
+
     try:
         # get random image
         img = choice(res)
     # if no image found, return error message
     except IndexError:
         return {"error": "no image found"}
+
     # return json
     return {"name": img[0], "type": img[1], "img_x": img[2], "img_y": img[3]}

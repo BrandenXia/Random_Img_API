@@ -19,6 +19,7 @@ logs
 database
 config
 test.py
+test
 
 # Working
 working/img_info.sqlite3

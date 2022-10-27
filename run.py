@@ -11,7 +11,20 @@ from src import config
 
 
 class StubbedGunicornLogger(Logger):
-    def setup(self, cfg):
+    """
+    logger class for app
+    """
+
+    def __init__(self, cfg):
+        super().__init__(cfg)
+        self.access_logger = None
+        self.error_logger = None
+
+    def setup(self, cfg) -> None:
+        """
+        :param cfg: the configuration
+        :return: None
+        """
         handler = logging.NullHandler()
         self.error_logger = logging.getLogger("gunicorn.error")
         self.error_logger.addHandler(handler)
@@ -22,12 +35,20 @@ class StubbedGunicornLogger(Logger):
 
 
 class StandaloneApplication(BaseApplication):
-    def __init__(self, app, options=None):
+    """
+    Standalone gunicorn application
+    """
+    def __init__(self, app, options=None) -> None:
+        """
+        :param app: the app
+        :param options: the running options
+        """
         self.options = options or {}
         self.application = app
         super(StandaloneApplication, self).__init__()
 
-    def load_config(self):
+    def load_config(self) -> None:
+        # get config
         config = {key: value for key, value in self.options.items() if key in self.cfg.settings and value is not None}
         for key, value in config.items():
             self.cfg.set(key.lower(), value)
@@ -37,17 +58,21 @@ class StandaloneApplication(BaseApplication):
 
 
 if __name__ == '__main__':
+    # set log level
     log_config = config.Config("log.json")
     log_level = log_config.get("log_level")
 
+    # if logs directory not exists, create it
     if not os.path.exists('logs'):
         os.mkdir('logs')
 
+    # set log format and log handler
     intercept_handler = RichHandler(rich_tracebacks=True)
     logging.basicConfig(handlers=[intercept_handler], level=log_level, format='%(message)s')
     logging.root.handlers = [intercept_handler]
     logging.root.setLevel(logging.INFO)
 
+    # log handler
     seen = set()
     for name in [
         *logging.root.manager.loggerDict.keys(),
@@ -62,6 +87,7 @@ if __name__ == '__main__':
             seen.add(name.split(".")[0])
             logging.getLogger(name).handlers = [intercept_handler]
 
+    # set gunicorn options
     options = {
         "bind": "0.0.0.0:8045",
         "workers": multiprocessing.cpu_count() * 2 + 1,
@@ -75,4 +101,5 @@ if __name__ == '__main__':
         "preload_app": True
     }
 
+    # run app
     StandaloneApplication(app, options).run()
