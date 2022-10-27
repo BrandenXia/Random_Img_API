@@ -32,7 +32,8 @@ def download(url: str, path: str, filename: str) -> None:
     try:
         total_size = int(header.headers.get("Content-Length"))
     except TypeError:
-        raise TypeError("The url is not a valid image url")
+        print("Failed to get file size, maybe because of the network")
+        return
 
     response = requests.get(url, headers=headers, stream=True)
     chunk_size = 1024
