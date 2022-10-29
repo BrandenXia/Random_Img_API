@@ -13,5 +13,6 @@ def cli():
     pass
 
 
+# Add commands
 cli.add_command(get)
 cli.add_command(run)

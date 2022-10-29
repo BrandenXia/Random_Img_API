@@ -16,7 +16,7 @@ Project for learning.
 ## Setup environment
 
 ```shell
-pip install --editable .
+pip install random_img_api
 ```
 
 ## Run server
@@ -92,5 +92,6 @@ img_api get <options>
 - [x] using setuptools to manage dependencies and build a package
 - [ ] finish download and generate image function
   - [x] download acg
-  - [ ] download wallpaper
+  - [x] download wallpaper
   - [ ] generate avatar
+- [ ] format commit message
