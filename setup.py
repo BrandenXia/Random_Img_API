@@ -1,16 +1,18 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 with open('README.md') as f:
     long_description = f.read()
 
 setup(
     name='random_img_api',
-    version='1.0',
+    version='1.1.0',
+    author='Branden Xia',
     description='Random Image API',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url="https://github.com/BrandenXia/Random_Img_API",
-    py_modules=find_packages(),
+    packages=['random_img_api', 'random_img_api.src', 'random_img_api.src.get_img'],
+    include_package_data=True,
     install_requires=[
         'pydenticon',
         'rich_click',

@@ -2,7 +2,7 @@
 
 A Random Img API build with FastAPI, contain post img and auto download
 
-Project for learning FastAPI.
+Project for learning.
 
 ## Available parameters
 
