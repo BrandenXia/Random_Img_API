@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-from src import config
+from random_img_api.src import config
 
 # Create database directory if not exists
 if not os.path.exists("database"):

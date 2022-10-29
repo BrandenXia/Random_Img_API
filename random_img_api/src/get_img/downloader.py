@@ -4,7 +4,7 @@ import os
 from rich.progress import Progress, TextColumn, BarColumn, TransferSpeedColumn, TimeRemainingColumn
 from rich.traceback import install
 
-from src import config
+from random_img_api.src import config
 
 # install rich traceback
 install()

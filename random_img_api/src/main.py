@@ -4,7 +4,7 @@ from typing import Union
 from re import match
 from random import choice
 
-from src import dbo
+from random_img_api.src import dbo
 
 # init app
 app = FastAPI()
