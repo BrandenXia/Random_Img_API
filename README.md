@@ -16,44 +16,45 @@ Project for learning FastAPI.
 ## Setup environment
 
 ```shell
-pip install -r requirements.txt
+pip install --editable .
 ```
 
-### Run server
+## Run server
 
 ```shell
-./start.sh
+img_api run <options>
 ```
 
-### End server
+### Options
+- `--port` `INTEGER`
+  - Port to run on
+  - default: `8045`
+- `--threads` `INTEGER`
+  - Number of threads to run
+  - default: `2`
+- `--workers` `INTEGER`
+  - Number of workers to run
+  - default: `cpu_count() * 2 + 1`
+- `--help`
+  - Show help message and exit
+
+## Image download [Not complete yet]
 
 ```shell
-./end.sh
+img_api get <options>
 ```
 
-## Image download [Not available yet]
+### Options
+- `--type` / `-t` `TEXT`
+  - the type of image to download
+  - default: `acg`
+  - choices: `acg`, `wallpaper`, `avatar`
+- `--num` / `-n`
+  - the number of images to download, 0 for unlimited
+  - default: `0`
+- `--help`
+  - Show the help message and exit
 
-```shell
-python get_img_url.py
-```
-
-### Usage
-```shell
-python get_img_url.py <options>
-```
-Options:
-- `--acg`: Get good images
-- `--wallpaper`: Get wallpapers
-- `--avatar`: Get avatars
-- `--help`: Show this message
-
-### Warning
-There is a bug that sometimes the program will download images which size is 0 kb when using `--wallpaper` option. 
-You can delete these images by using the following command:
-
-```shell
-find . -name "*" -type f -size 0c | xargs -n 1 rm -f
-```
 
 ## Config
 ### Database
@@ -66,6 +67,12 @@ find . -name "*" -type f -size 0c | xargs -n 1 rm -f
   - stored in `download.json`
   - default: `./img`
 
+### Log
+- `log_level`: Level of log
+  - stored in `log.json`
+  - default: `INFO`
+  - choices: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`
+
 ## Todo
 - [ ] Add more available parameters
 - [ ] Modulize the code
@@ -73,10 +80,8 @@ find . -name "*" -type f -size 0c | xargs -n 1 rm -f
     - [x] read and write config file
     - [x] change download path
     - [ ] change download source
-    - [ ] change download format
     - [x] change database path
     - [ ] change config using command line
-    - [ ] change database using command line
   - [x] change structure of image download
 - [x] make a download progress bar with rich
 - [ ] use ai to generate images
@@ -84,4 +89,8 @@ find . -name "*" -type f -size 0c | xargs -n 1 rm -f
 - [x] add more comments
 - [ ] add rsa protection or protection according to ip
 - [ ] change return url so that people will be able to review what they just look at
-- [ ] using setuptools to manage dependencies and build a package
+- [x] using setuptools to manage dependencies and build a package
+- [ ] finish download and generate image function
+  - [x] download acg
+  - [ ] download wallpaper
+  - [ ] generate avatar

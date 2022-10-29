@@ -1,7 +1,8 @@
-import click
+import rich_click as click
 import os
 
 from PIL import Image
+from rich import print
 
 from src import dbo, config
 from src.get_img import downloader, get_url
@@ -40,8 +41,8 @@ def download(type: str) -> int:
 
 
 @click.command()
-@click.option("--type", "-t", default="acg", type=str, help="the type of image to download")
-@click.option("--num", "-n", default=0, type=int, help="the number of images to download")
+@click.option("--type", "-t", default="acg", type=str, help="The type of image to download")
+@click.option("--num", "-n", default=0, type=int, help="The number of images to download")
 def get(type, num):
     """
     Get image from internet or generate by program
@@ -52,7 +53,7 @@ def get(type, num):
     elif type == "avatar":
         action = "generate"
     else:
-        click.echo("Unknown type: %s" % type)
+        print("[bold red]Unknown type: %s" % type)
         return
 
     if action == "download":
@@ -60,13 +61,13 @@ def get(type, num):
             while True:
                 rt = download(type)
                 if rt == 1:
-                    click.echo("Download canceled")
+                    print("[bold green]Download canceled")
                     break
         else:
             for i in range(num):
                 rt = download(type)
                 if rt != 0:
-                    click.echo("Download canceled")
+                    print("[bold green]Download canceled")
                     break
     elif action == "generate":
         pass

@@ -1,7 +1,7 @@
-import click
+import rich_click as click
 
-from get_img import get
-from run import run
+from src.get_img.get_img import get
+from src.run import run
 
 
 @click.group()
@@ -15,5 +15,3 @@ def cli():
 
 cli.add_command(get)
 cli.add_command(run)
-
-cli()

@@ -1,13 +1,13 @@
 import os
 import logging
-import click
+import rich_click as click
 
 from gunicorn.app.base import BaseApplication
 from gunicorn.glogging import Logger
 from multiprocessing import cpu_count
 from rich.logging import RichHandler
 
-from main import app
+from src.main import app
 from src import config
 
 
@@ -60,9 +60,9 @@ class StandaloneApplication(BaseApplication):
 
 
 @click.command()
-@click.option("--port", default=8045, type=int, help="port to run on")
-@click.option("--threads", default=2, type=int, help="number of threads to run on")
-@click.option("--workers", default=cpu_count() * 2 + 1, type=int, help="number of workers to run on")
+@click.option("--port", default=8045, type=int, help="Port to run on")
+@click.option("--threads", default=2, type=int, help="Number of threads to run")
+@click.option("--workers", default=cpu_count() * 2 + 1, type=int, help="Number of workers to run")
 def run(port, threads, workers):
     """
     Run the random image server
@@ -72,8 +72,8 @@ def run(port, threads, workers):
     log_level = log_config.get("log_level")
 
     # if logs directory not exists, create it
-    if not os.path.exists('logs'):
-        os.mkdir('logs')
+    if not os.path.exists('../logs'):
+        os.mkdir('../logs')
 
     # set log format and log handler
     intercept_handler = RichHandler(rich_tracebacks=True)

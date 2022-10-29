@@ -3,7 +3,6 @@ import os
 
 from rich.progress import Progress, TextColumn, BarColumn, TransferSpeedColumn, TimeRemainingColumn
 from rich.traceback import install
-from retry import retry
 
 from src import config
 
@@ -19,14 +18,12 @@ progress = Progress(TextColumn("[bold blue]{task.fields[filename]}"),
                     TimeRemainingColumn())
 # read config
 download_config = config.Config("download.json")
-retry_times = download_config.get("retry_times")
 # config headers
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
                          "Chrome/91.0.4472.124 Safari/537.36"}
 
 
 # retry decorator
-@retry(tries=retry_times, delay=1)
 def download(url: str, path: str, filename: str) -> int:
     """
     :param url: download url
