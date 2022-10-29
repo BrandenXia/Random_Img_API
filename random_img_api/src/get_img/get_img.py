@@ -4,8 +4,8 @@ import os
 from PIL import Image
 from rich import print
 
-from src import dbo, config
-from src.get_img import downloader, get_url
+from random_img_api.src import dbo, config
+from random_img_api.src.get_img import get_url, downloader
 
 # init database
 dbo.init()

@@ -2,7 +2,7 @@ import requests
 
 from json import loads
 
-from src import config
+from random_img_api.src import config
 
 # get config
 download_config = config.Config("download.json")

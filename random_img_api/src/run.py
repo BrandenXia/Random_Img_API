@@ -7,8 +7,8 @@ from gunicorn.glogging import Logger
 from multiprocessing import cpu_count
 from rich.logging import RichHandler
 
-from src.main import app
-from src import config
+from random_img_api.src.main import app
+from random_img_api.src import config
 
 
 class StubbedGunicornLogger(Logger):
@@ -72,8 +72,8 @@ def run(port, threads, workers):
     log_level = log_config.get("log_level")
 
     # if logs directory not exists, create it
-    if not os.path.exists('../logs'):
-        os.mkdir('../logs')
+    if not os.path.exists('../../logs'):
+        os.mkdir('../../logs')
 
     # set log format and log handler
     intercept_handler = RichHandler(rich_tracebacks=True)
