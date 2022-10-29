@@ -1,6 +1,6 @@
 {
+  "retry_times": 3,
   "download_path": "img",
-
   "r18": 2,
 
   "database_name": "img_info.sqlite3",

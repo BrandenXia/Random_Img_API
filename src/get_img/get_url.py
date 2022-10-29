@@ -4,17 +4,20 @@ from json import loads
 
 from src import config
 
+# get config
 download_config = config.Config("download.json")
 r18 = download_config.get("r18")
 
 
-def get_url(type: str) -> list[str, str]:
+def get_url(type: str) -> list[str, str] or None:
     """
     :param type: the img type(acg / wallpaper)
-    :return: [img url, filename]
+    :return: [img url, filename], None if invalid type
     """
     if type == "acg":
         return acg()
+    else:
+        return
 
 
 def acg() -> list[str, str]:

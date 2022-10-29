@@ -23,9 +23,9 @@ def init() -> None:
     try:
         cursor.execute("""CREATE TABLE img (NAME text, TYPE text, FORMAT text, PATH text, img_x int, img_y int)""")
         database.commit()
-        print("Table created")
+        print("Table not exist, creating table...")
     except sqlite3.OperationalError:
-        print("Table already exists")
+        return
 
 
 def insert(name: str, type: str, format: str, path: str, img_x: int, img_y: int) -> None:

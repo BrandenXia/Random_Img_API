@@ -77,10 +77,11 @@ find . -name "*" -type f -size 0c | xargs -n 1 rm -f
     - [x] change database path
     - [ ] change config using command line
     - [ ] change database using command line
-  - [ ] change structure of image download
-- [ ] make a download progress bar with rich
+  - [x] change structure of image download
+- [x] make a download progress bar with rich
 - [ ] use ai to generate images
 - [x] add colored log
 - [x] add more comments
 - [ ] add rsa protection or protection according to ip
 - [ ] change return url so that people will be able to review what they just look at
+- [ ] using setuptools to manage dependencies and build a package

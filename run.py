@@ -1,9 +1,10 @@
-import logging
-import multiprocessing
 import os
+import logging
+import click
 
 from gunicorn.app.base import BaseApplication
 from gunicorn.glogging import Logger
+from multiprocessing import cpu_count
 from rich.logging import RichHandler
 
 from main import app
@@ -38,6 +39,7 @@ class StandaloneApplication(BaseApplication):
     """
     Standalone gunicorn application
     """
+
     def __init__(self, app, options=None) -> None:
         """
         :param app: the app
@@ -57,7 +59,14 @@ class StandaloneApplication(BaseApplication):
         return self.application
 
 
-if __name__ == '__main__':
+@click.command()
+@click.option("--port", default=8045, type=int, help="port to run on")
+@click.option("--threads", default=2, type=int, help="number of threads to run on")
+@click.option("--workers", default=cpu_count() * 2 + 1, type=int, help="number of workers to run on")
+def run(port, threads, workers):
+    """
+    Run the random image server
+    """
     # set log level
     log_config = config.Config("log.json")
     log_level = log_config.get("log_level")
@@ -89,10 +98,10 @@ if __name__ == '__main__':
 
     # set gunicorn options
     options = {
-        "bind": "0.0.0.0:8045",
-        "workers": multiprocessing.cpu_count() * 2 + 1,
+        "bind": "0.0.0.0:%d" % port,
+        "workers": workers,
         "worker_class": "uvicorn.workers.UvicornWorker",
-        "threads": 2,
+        "threads": threads,
         "timeout": 120,
         "workers_connections": 1000,
         "accesslog": "-",
