@@ -15,9 +15,12 @@ dbo.init()
 download_config = config.Config("download.json")
 img_path = download_config.get("img_path")
 
+# create image path if not exist
+if not os.path.exists(img_path):
+    os.makedirs(img_path)
+
 
 def download(type: str) -> int:
-    global img_path
     # get image url and filename
     try:
         info = get_url.get_url(type)
@@ -26,18 +29,18 @@ def download(type: str) -> int:
 
     # img name and path
     img_name = info[1]
-    img_path = os.path.join(img_path, "%s.jpg" % img_name)
+    img_file_path = os.path.join(img_path, "%s.jpg" % img_name)
 
     # download img
-    rt = downloader.download(info[0], img_path, "%s.jpg" % img_name)
+    rt = downloader.download(info[0], img_file_path, "%s.jpg" % img_name)
     # if failed, return exit code
     if rt != 0:
         return rt
 
     # insert info into database
-    img = Image.open(img_path)
+    img = Image.open(img_file_path)
     img_x, img_y = img.size
-    dbo.insert(info[1], type, "jpg", img_path, img_x, img_y)
+    dbo.insert(info[1], type, "jpg", img_file_path, img_x, img_y)
 
     return 0
 
