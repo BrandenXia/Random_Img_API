@@ -1,5 +1,5 @@
 import pydenticon
-import hashlib
+import time
 
 seed = time.time_ns();
 
