@@ -20,10 +20,10 @@ dist
 build
 
 # Testing
-img
-logs
-database
-config
+/img
+/logs
+/database
+/config
 test.py
 test
 
