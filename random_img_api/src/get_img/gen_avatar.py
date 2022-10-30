@@ -8,8 +8,8 @@ from random_img_api.src.config import config
 
 console = Console()
 
-generate_config = config.Config("download.json")
-img_path = generate_config.get("img_path")
+_config = config.Config("config.json")
+img_path = _config.get("img_path")
 
 
 def gen_avatar() -> str:

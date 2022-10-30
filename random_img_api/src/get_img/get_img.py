@@ -2,7 +2,7 @@ import rich_click as click
 import os
 
 from PIL import Image
-from rich import print
+from rich.console import Console
 
 from random_img_api.src import dbo
 from random_img_api.src.config import config
@@ -10,10 +10,11 @@ from random_img_api.src.get_img import get_url, downloader, gen_avatar
 
 # init database
 dbo.init()
+console = Console()
 
 # get config
-download_config = config.Config("download.json")
-img_path = download_config.get("img_path")
+_config = config.Config("config.json")
+img_path = _config.get("img_path")
 
 # create image path if not exist
 if not os.path.exists(img_path):
@@ -32,7 +33,7 @@ def download(type: str) -> int:
     img_file_path = os.path.join(img_path, "%s.jpg" % img_name)
 
     # download img
-    rt = downloader.download(info[0], img_file_path, "%s.jpg" % img_name)
+    rt = downloader.download(info[0], img_path, "%s.jpg" % img_name)
     # if failed, return exit code
     if rt != 0:
         return rt
@@ -54,7 +55,8 @@ def generator(type: str) -> None:
 
 
 @click.command()
-@click.option("--type", "-t", default="acg", type=str, help="The type of image to download")
+@click.option("--type", "-t", default="acg", type=click.Choice(["acg", "wallpaper", "avatar"]),
+              help="The type of image to download")
 @click.option("--num", "-n", default=0, type=int, help="The number of images to download")
 def get(type, num):
     """
@@ -66,26 +68,42 @@ def get(type, num):
     elif type == "avatar":
         action = "generate"
     else:
-        print("[bold red]Unknown type: %s" % type)
+        console.print("[bold red]Unknown type: %s" % type)
         return
 
     if action == "download":
+        count = 0
         if num == 0:
             while True:
                 rt = download(type)
+                count += 1
                 if rt == 1:
-                    print("[bold green]Download canceled")
+                    console.print("[bold green]Download canceled")
                     break
         else:
             for i in range(num):
                 rt = download(type)
+                count += 1
                 if rt != 0:
-                    print("[bold green]Download canceled")
+                    console.print("[bold green]Download canceled")
                     break
+
+        if count == 1:
+            console.print("[bold green]Successfully downloaded 1 image")
+        elif count > 1:
+            console.print("[bold green]Successfully downloaded %d images" % count)
     elif action == "generate":
+        count = 0
         if num == 0:
             while True:
                 generator(type)
+                count += 1
         else:
             for i in range(num):
                 generator(type)
+                count += 1
+
+        if count == 1:
+            console.print("[bold green]Successfully generated 1 image")
+        elif count > 1:
+            console.print("[bold green]Successfully generated %d images" % count)

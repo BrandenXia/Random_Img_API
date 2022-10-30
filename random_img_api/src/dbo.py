@@ -7,8 +7,8 @@ from random_img_api.src.config import config
 if not os.path.exists("database"):
     os.makedirs("database")
 # read database config
-database_config = config.Config("database.json")
-database_name = database_config.get("database_name")
+_config = config.Config("config.json")
+database_name = _config.get("database_name")
 # connect to database
 database = sqlite3.connect(os.path.join("database", database_name))
 cursor = database.cursor()

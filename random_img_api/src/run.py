@@ -58,16 +58,16 @@ class StandaloneApplication(BaseApplication):
 
 
 @click.command()
-@click.option("--port", default=8045, type=int, help="Port to run on")
-@click.option("--threads", default=2, type=int, help="Number of threads to run")
-@click.option("--workers", default=cpu_count() * 2 + 1, type=int, help="Number of workers to run")
+@click.option("--port", "-p", default=8045, type=int, metavar="PORT", help="Port to run on")
+@click.option("--threads", "-t", default=2, type=int, help="Number of threads to run")
+@click.option("--workers", "-w", default=cpu_count() * 2 + 1, type=int, help="Number of workers to run")
 def run(port, threads, workers):
     """
     Run the random image server
     """
     # set log level
-    log_config = config.Config("server.json")
-    log_level = log_config.get("log_level")
+    _config = config.Config("config.json")
+    log_level = _config.get("log_level")
 
     # set log format and log handler
     intercept_handler = RichHandler(rich_tracebacks=True)

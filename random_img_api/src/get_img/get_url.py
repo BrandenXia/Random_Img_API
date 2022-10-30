@@ -5,8 +5,8 @@ from json import loads
 from random_img_api.src.config import config
 
 # get config
-download_config = config.Config("download.json")
-r18 = download_config.get("r18")
+_config = config.Config("config.json")
+r18 = _config.get("r18")
 
 
 def get_url(type: str) -> list[str, str] or None:

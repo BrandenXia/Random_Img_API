@@ -57,19 +57,32 @@ img_api get <options>
 
 
 ## Config
+
+### Change Config
+
+```shell
+img_api config <option> <CONFIG_VALUE>
+```
+
+Options:
+- `--setup` setup config file
+
+Argument:
+- `CONFIG_VALUE` allow argument like `img_path=img` or `database_name`
+
 ### Database
 - `database_name`: Name of database file
-  - stored in `database.json`
+  - stored in `config.json`
   - default: `img_info.sqlite3`
 
 ### Download
 - `img_path`: Path of img folder
-  - stored in `download.json`
+  - stored in `config.json`
   - default: `./img`
 
 ### Log
 - `log_level`: Level of log
-  - stored in `server.json`
+  - stored in `config.json`
   - default: `INFO`
   - choices: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`
 
@@ -81,7 +94,7 @@ img_api get <options>
     - [x] change download path
     - [ ] change download source
     - [x] change database path
-    - [ ] change config using command line
+    - [x] change config using command line
   - [x] change structure of image download
 - [x] make a download progress bar with rich
 - [ ] use ai to generate images

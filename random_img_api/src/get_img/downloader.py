@@ -2,12 +2,7 @@ import requests
 import os
 
 from rich.progress import Progress, TextColumn, BarColumn, TransferSpeedColumn, TimeRemainingColumn
-from rich.traceback import install
 
-from random_img_api.src.config import config
-
-# install rich traceback
-install()
 # config rich progress bar
 progress = Progress(TextColumn("[bold blue]{task.fields[filename]}"),
                     BarColumn(bar_width=None),
@@ -17,9 +12,6 @@ progress = Progress(TextColumn("[bold blue]{task.fields[filename]}"),
                     "•",
                     TimeRemainingColumn(),
                     transient=True)
-
-# read config
-download_config = config.Config("download.json")
 # config headers
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
                          "Chrome/91.0.4472.124 Safari/537.36"}
