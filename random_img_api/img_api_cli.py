@@ -5,7 +5,7 @@ from random_img_api.src.run import run
 
 
 @click.group()
-@click.version_option(version="v1.1.0")
+@click.version_option(version="v1.1.1")
 def cli():
     """
     Random Image API command line interface

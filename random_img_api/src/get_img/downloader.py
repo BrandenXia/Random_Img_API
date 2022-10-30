@@ -4,7 +4,7 @@ import os
 from rich.progress import Progress, TextColumn, BarColumn, TransferSpeedColumn, TimeRemainingColumn
 from rich.traceback import install
 
-from random_img_api.src import config
+from random_img_api.src.config import config
 
 # install rich traceback
 install()
@@ -15,7 +15,9 @@ progress = Progress(TextColumn("[bold blue]{task.fields[filename]}"),
                     "•",
                     TransferSpeedColumn(),
                     "•",
-                    TimeRemainingColumn())
+                    TimeRemainingColumn(),
+                    transient=True)
+
 # read config
 download_config = config.Config("download.json")
 # config headers

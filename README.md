@@ -63,13 +63,13 @@ img_api get <options>
   - default: `img_info.sqlite3`
 
 ### Download
-- `download_path`: Path of download folder
+- `img_path`: Path of img folder
   - stored in `download.json`
   - default: `./img`
 
 ### Log
 - `log_level`: Level of log
-  - stored in `log.json`
+  - stored in `server.json`
   - default: `INFO`
   - choices: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`
 
@@ -90,8 +90,8 @@ img_api get <options>
 - [ ] add rsa protection or protection according to ip
 - [ ] change return url so that people will be able to review what they just look at
 - [x] using setuptools to manage dependencies and build a package
-- [ ] finish download and generate image function
+- [x] finish download and generate image function
   - [x] download acg
   - [x] download wallpaper
-  - [ ] generate avatar
+  - [x] generate avatar
 - [ ] format commit message

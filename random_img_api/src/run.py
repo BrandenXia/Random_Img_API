@@ -1,4 +1,3 @@
-import os
 import logging
 import rich_click as click
 
@@ -8,14 +7,13 @@ from multiprocessing import cpu_count
 from rich.logging import RichHandler
 
 from random_img_api.src.main import app
-from random_img_api.src import config
+from random_img_api.src.config import config
 
 
 class StubbedGunicornLogger(Logger):
     """
     logger class for app
     """
-
     def __init__(self, cfg):
         super().__init__(cfg)
         self.access_logger = None
@@ -68,12 +66,8 @@ def run(port, threads, workers):
     Run the random image server
     """
     # set log level
-    log_config = config.Config("log.json")
+    log_config = config.Config("server.json")
     log_level = log_config.get("log_level")
-
-    # if logs directory not exists, create it
-    if not os.path.exists('../../logs'):
-        os.mkdir('../../logs')
 
     # set log format and log handler
     intercept_handler = RichHandler(rich_tracebacks=True)

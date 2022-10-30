@@ -5,14 +5,16 @@ with open('README.md') as f:
 
 setup(
     name='random_img_api',
-    version='1.1.0',
+    version='1.1.1',
     author='Branden Xia',
     description='Random Image API',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url="https://github.com/BrandenXia/Random_Img_API",
-    packages=['random_img_api', 'random_img_api.src', 'random_img_api.src.get_img'],
-    include_package_data=True,
+    packages=['random_img_api',
+              'random_img_api.src',
+              'random_img_api.src.get_img',
+              "random_img_api.src.config"],
     install_requires=[
         'pydenticon',
         'rich_click',

@@ -10,8 +10,17 @@ if not os.path.exists("config"):
 
 # If config file doesn't have a value, read it from the default config file
 def get_default(key: str) -> Any:
-    with open("default.json", "r", encoding="utf-8") as f:
-        default = json.load(f)
+    default = {
+        # download config
+        "img_path": "img",
+        "r18": 2,
+
+        # database config
+        "database_name": "img_info.sqlite3",
+
+        # server config
+        "log_level": "INFO"
+    }
     return default[key]
 
 
@@ -57,6 +66,6 @@ class Config:
         """
         if config_file is None:
             config_file = self.config_file
-        config_file = os.path.join("config", config_file)
+        config_file = os.path.join("", config_file)
         with open(config_file, "w", encoding="utf-8") as f:
             json.dump(self.config, f, indent=4)
