@@ -13,6 +13,6 @@ padding = (20, 20, 20, 20)
 
 # Generate a PNG image using a generator that will create 10x10 block identicons using SHA1 digest.
 identicon = pydenticon.Generator(10, 10, foreground=foreground, background=background).generate(seed, 200, 200, padding=padding, output_format="png")
-writeavatar = open("avatar" + seed + ".png", "wb")
+writeavatar = open("avatar" + str(seed) + ".png", "wb")
 writeavatar.write(identicon)
 writeavatar.close()
