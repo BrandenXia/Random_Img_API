@@ -22,7 +22,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Publish to PyPI using poetry
-        uses: JRubics/poetry-publish@v1
+      - uses: actions/setup-python@v4
         with:
-          pypi_token: ${{ secrets.PYPI }}
+          python-version: 3.10
+      - name: Run image
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: 1.2.2
+      - name: Publish to PyPI using poetry
+        run: poetry publish
+        args:
+          - --build
+          - --username=__token__
+          - --password=${{ secrets.PYPI }}
