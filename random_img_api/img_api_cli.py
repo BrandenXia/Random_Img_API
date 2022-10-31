@@ -23,3 +23,5 @@ cli.add_command(get)
 cli.add_command(run)
 cli.add_command(config)
 
+if __name__ == "__main__":
+    cli()

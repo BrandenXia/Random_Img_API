@@ -1,7 +1,6 @@
 import rich_click as click
 import os
 
-from PIL import Image
 from rich.console import Console
 
 from random_img_api.src import dbo
@@ -38,6 +37,7 @@ def download(type: str) -> int:
     if rt != 0:
         return rt
 
+    from PIL import Image
     # insert info into database
     img = Image.open(img_file_path)
     img_x, img_y = img.size

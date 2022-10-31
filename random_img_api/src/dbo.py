@@ -52,7 +52,7 @@ def delete(path: str) -> None:
     database.commit()
 
 
-def search(type: str = None, img_x: int = None, img_y: int = None, needed: str = "*") -> list:
+def search(type: str = None, img_x: int = None, img_y: int = None, needed: str = "*") -> tuple:
     """
     :param type: type of image (acg / wallpaper / avatar)
     :param img_x: width of image
@@ -80,4 +80,4 @@ def search(type: str = None, img_x: int = None, img_y: int = None, needed: str =
         res = cursor.execute("SELECT %s FROM img WHERE %s" % (needed, search_args[0],))
     else:
         res = cursor.execute("SELECT %s FROM img WHERE %s" % (needed, " AND ".join(search_args),))
-    return res.fetchall()
+    return tuple(res.fetchall())

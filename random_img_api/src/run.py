@@ -4,16 +4,13 @@ import rich_click as click
 from gunicorn.app.base import BaseApplication
 from gunicorn.glogging import Logger
 from multiprocessing import cpu_count
-from rich.logging import RichHandler
-
-from random_img_api.src.main import app
-from random_img_api.src.config import config
 
 
 class StubbedGunicornLogger(Logger):
     """
     logger class for app
     """
+
     def __init__(self, cfg):
         super().__init__(cfg)
         self.access_logger = None
@@ -65,10 +62,12 @@ def run(port, threads, workers):
     """
     Run the random image server
     """
+    from random_img_api.src.config import config
     # set log level
     _config = config.Config("config.json")
     log_level = _config.get("log_level")
 
+    from rich.logging import RichHandler
     # set log format and log handler
     intercept_handler = RichHandler(rich_tracebacks=True)
     logging.basicConfig(handlers=[intercept_handler], level=log_level, format='%(message)s')
@@ -105,4 +104,5 @@ def run(port, threads, workers):
     }
 
     # run app
+    from random_img_api.src.main import app
     StandaloneApplication(app, options).run()

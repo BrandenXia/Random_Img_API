@@ -4,12 +4,8 @@ import pydenticon
 
 from rich.console import Console
 
-from random_img_api.src.config import config
 
 console = Console()
-
-_config = config.Config("config.json")
-img_path = _config.get("img_path")
 
 
 def gen_avatar() -> str:
@@ -36,6 +32,10 @@ def gen_avatar() -> str:
                                                                      output_format="png")
 
     filename = "avatar-%s.png" % seed
+    # get config
+    from random_img_api.src.config import config
+    _config = config.Config("config.json")
+    img_path = _config.get("img_path")
     with open(os.path.join(img_path, filename), "wb") as write_avatar:
         write_avatar.write(identicon)
 

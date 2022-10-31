@@ -6,12 +6,15 @@ Project for learning.
 
 ## Available parameters
 
-- size: `[positive integer | ?]x[positive integer | ?]`
+- size: `[positive integer or ?]x[positive integer or ?]`
     - example: `100x100`, `100x?`, `?x100`
     - default: `?x?`
-- type: `[acg | wallpaper | avatar]`
+- type: `acg` or `wallpaper` or `avatar`
     - example: `acg`, `wallpaper`, `avatar`
     - default: `None`
+- rt: `img` or `json`
+    - example: `img`, `json`
+    - default: `img`
 
 ## Setup environment
 
