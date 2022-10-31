@@ -34,23 +34,39 @@ def download(type: str) -> int:
     # download img
     rt = downloader.download(info[0], img_path, "%s.jpg" % img_name)
     # if failed, return exit code
-    if rt != 0:
-        return rt
+    # 1: download failed
+    if rt == 1:
+        print("[bold red]Connection Error")
+        return 1
+    # 2: failed to get image size
+    elif rt == 2:
+        print("[bold red]Failed to get image size")
+        return 2
+    # download canceled
+    elif rt == 3:
+        return 3
 
+    # print download info
+    console.print("[cyan]Downloaded image: [bold yellow]%s.jpg[/bold yellow]" % img_name)
+
+    # get image size
     from PIL import Image
     # insert info into database
     img = Image.open(img_file_path)
     img_x, img_y = img.size
+    # insert into database
     dbo.insert(info[1], type, "jpg", img_file_path, img_x, img_y)
 
     return 0
 
 
 def generator(type: str) -> None:
+    # get generated image filename
     if type == "avatar":
         filename = gen_avatar.gen_avatar()
     else:
         return
+    # insert into database
     dbo.insert(filename, type, "png", os.path.join(img_path, filename), 200, 200)
 
 
@@ -62,7 +78,7 @@ def get(type, num):
     """
     Get image from internet or generate by program
     """
-    #
+    # get file type
     if type == "acg" or type == "wallpaper":
         action = "download"
     elif type == "avatar":
@@ -72,37 +88,52 @@ def get(type, num):
         return
 
     if action == "download":
-        count = 0
+        # count download file amount
+        # if num is 0, download forever
         if num == 0:
+            count = 0
             while True:
                 rt = download(type)
-                count += 1
-                if rt == 1:
+                # if download success, count + 1
+                if rt == 0:
+                    count += 1
+                # if download canceled, break
+                elif rt == 3:
                     console.print("[bold green]Download canceled")
                     break
+        # download num times
         else:
+            count = num
             for i in range(num):
                 rt = download(type)
-                count += 1
+                # if return error code, count - 1
                 if rt != 0:
-                    console.print("[bold green]Download canceled")
-                    break
+                    count -= 1
+                    # if download canceled, break
+                    if rt == 3:
+                        console.print("[bold green]Download canceled")
+                        break
 
+        # report download result
         if count == 1:
             console.print("[bold green]Successfully downloaded 1 image")
         elif count > 1:
             console.print("[bold green]Successfully downloaded %d images" % count)
     elif action == "generate":
-        count = 0
+        # count generate file amount
+        # if num is 0, generate forever
         if num == 0:
+            count = 0
             while True:
                 generator(type)
                 count += 1
+        # generate num times
         else:
+            count = num
             for i in range(num):
                 generator(type)
-                count += 1
 
+        # report generate result
         if count == 1:
             console.print("[bold green]Successfully generated 1 image")
         elif count > 1:

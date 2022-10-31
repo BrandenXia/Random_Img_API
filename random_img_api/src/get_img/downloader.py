@@ -32,7 +32,6 @@ def download(url: str, path: str, filename: str) -> int:
     try:
         response = requests.get(url, headers=headers, stream=True)
     except requests.exceptions.ConnectionError:
-        print("Connection error")
         return 1
     except KeyboardInterrupt:
         return 3
@@ -42,7 +41,6 @@ def download(url: str, path: str, filename: str) -> int:
         total_size = response.headers.get('Content-Length')
         total_size = int(total_size)
     except TypeError:
-        print("Failed to get file size")
         return 2
     except KeyboardInterrupt:
         return 3

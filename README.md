@@ -91,11 +91,11 @@ Argument:
 
 ## Todo
 - [ ] Add more available parameters
-- [ ] Modulize the code
+- [x] Modulize the code
   - [ ] allow user to config
     - [x] read and write config file
     - [x] change download path
-    - [ ] change download source
+    - [x] change download source
     - [x] change database path
     - [x] change config using command line
   - [x] change structure of image download
@@ -110,4 +110,4 @@ Argument:
   - [x] download acg
   - [x] download wallpaper
   - [x] generate avatar
-- [ ] format commit message
+- [x] format commit message
