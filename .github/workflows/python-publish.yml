@@ -10,7 +10,6 @@ name: Upload Python Package
 
 on:
   push:
-    branches: [ main ]
     tags:
       - 'v*'
   workflow_dispatch:
@@ -30,8 +29,5 @@ jobs:
         with:
           poetry-version: 1.2.2
       - name: Publish to PyPI using poetry
-        run: poetry publish
-        args:
-          - --build
-          - --username=__token__
-          - --password=${{ secrets.PYPI }}
+        run: |
+          poetry publish --build --username=__token__ --password=${{ secrets.PYPI }}
