@@ -2,11 +2,6 @@ import time
 import os
 import pydenticon
 
-from rich.console import Console
-
-
-console = Console()
-
 
 def gen_avatar() -> str:
     seed = str(time.time_ns())
@@ -38,7 +33,5 @@ def gen_avatar() -> str:
     img_path = _config.get("img_path")
     with open(os.path.join(img_path, filename), "wb") as write_avatar:
         write_avatar.write(identicon)
-
-    console.log("[cyan][bold]%s[/bold] generated[/cyan]" % filename)
 
     return filename

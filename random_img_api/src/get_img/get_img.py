@@ -68,6 +68,7 @@ def generator(type: str) -> None:
         return
     # insert into database
     dbo.insert(filename, type, "png", os.path.join(img_path, filename), 200, 200)
+    console.print("[cyan]Generated image: [bold yellow]%s.png[/bold yellow]" % filename)
 
 
 @click.command()

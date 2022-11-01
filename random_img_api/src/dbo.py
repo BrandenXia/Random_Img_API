@@ -20,12 +20,9 @@ def init() -> None:
     initialize database
     """
     # create table if not exists
-    try:
-        cursor.execute("""CREATE TABLE img (NAME text, TYPE text, FORMAT text, PATH text, img_x int, img_y int)""")
-        database.commit()
-        print("Table not exist, creating table...")
-    except sqlite3.OperationalError:
-        return
+    cursor.execute("""CREATE TABLE IF NOT EXISTS img
+(NAME text, TYPE text, FORMAT text, PATH text, img_x int, img_y int)""")
+    database.commit()
 
 
 def insert(name: str, type: str, format: str, path: str, img_x: int, img_y: int) -> None:
@@ -38,7 +35,7 @@ def insert(name: str, type: str, format: str, path: str, img_x: int, img_y: int)
     :param img_y: height of image
     :return: error message if error occurred, else None
     """
-    cursor.execute("INSERT INTO img VALUES ('%s', '%s', '%s', '%s', '%d', '%d')"
+    cursor.execute("INSERT INTO img VALUES ('%s', '%s', '%s', '%s', %d, %d)"
                    % (name, type, format, path, img_x, img_y,))
     database.commit()
 
