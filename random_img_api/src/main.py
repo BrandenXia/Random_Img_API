@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Query
 from fastapi.responses import StreamingResponse
-from typing import Union
 from re import compile
 from random import choice
 
@@ -16,8 +15,8 @@ match_size = compile(r"([1-9]\d*|\?)x([1-9]\d*|\?)")
 
 # app routes
 @app.get("/")
-async def main(type: Union[str, None] = Query(default=None, max_length=10, regex=r"^(acg|wallpaper|avatar)$"),
-               size: Union[str, None] = Query(default=None, max_length=10, regex=r"^([1-9]\d*|\?)x([1-9]\d*|\?)$"),
+async def main(type: str | None = Query(default=None, max_length=10, regex=r"^(acg|wallpaper|avatar)$"),
+               size: str | None = Query(default=None, max_length=10, regex=r"^([1-9]\d*|\?)x([1-9]\d*|\?)$"),
                rt: str = Query(default="img", max_length=10, regex=r"(json|img)")
                ) -> StreamingResponse or dict:
     """
