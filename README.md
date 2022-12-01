@@ -92,7 +92,7 @@ Argument:
 ## Todo
 - [ ] Add more available parameters
 - [x] Modulize the code
-  - [ ] allow user to config
+  - [x] allow user to config
     - [x] read and write config file
     - [x] change download path
     - [x] change download source

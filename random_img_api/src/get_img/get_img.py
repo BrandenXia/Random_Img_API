@@ -5,7 +5,6 @@ from rich.console import Console
 
 from random_img_api.src import dbo
 from random_img_api.src.config import config
-from random_img_api.src.get_img import get_url, downloader, gen_avatar
 
 # init database
 dbo.init()
@@ -23,7 +22,8 @@ if not os.path.exists(img_path):
 def download(type: str) -> int:
     # get image url and filename
     try:
-        info = get_url.get_url(type)
+        from random_img_api.src.get_img.get_url import get_url
+        info = get_url(type)
     except KeyboardInterrupt:
         return 1
 
@@ -32,6 +32,7 @@ def download(type: str) -> int:
     img_file_path = os.path.join(img_path, "%s.jpg" % img_name)
 
     # download img
+    from random_img_api.src.get_img import downloader
     rt = downloader.download(info[0], img_path, "%s.jpg" % img_name)
     # if failed, return exit code
     # 1: download failed
@@ -63,7 +64,8 @@ def download(type: str) -> int:
 def generator(type: str) -> None:
     # get generated image filename
     if type == "avatar":
-        filename = gen_avatar.gen_avatar()
+        from random_img_api.src.get_img.gen_avatar import gen_avatar
+        filename = gen_avatar()
     else:
         return
     # insert into database
@@ -72,7 +74,7 @@ def generator(type: str) -> None:
 
 
 @click.command()
-@click.option("--type", "-t", default="acg", type=click.Choice(["acg", "wallpaper", "avatar"]),
+@click.option("--type", "-t", default="acg", type=click.Choice(["acg", "wallpaper", "avatar", "ai"]),
               help="The type of image to download")
 @click.option("--num", "-n", default=0, type=int, help="The number of images to download")
 def get(type, num):
@@ -84,6 +86,8 @@ def get(type, num):
         action = "download"
     elif type == "avatar":
         action = "generate"
+    elif type == "ai":
+        action = "download"
     else:
         console.print("[bold red]Unknown type: %s" % type)
         return
