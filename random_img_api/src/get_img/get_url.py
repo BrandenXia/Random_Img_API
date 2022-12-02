@@ -13,7 +13,7 @@ def get_url(type: str) -> tuple[str, str] or None:
     elif type == "wallpaper":
         return wallpaper()
     else:
-        return
+        raise Exception("Invalid Type: %s" % type)
 
 
 def acg() -> tuple[str, str]:
@@ -42,3 +42,9 @@ def wallpaper() -> tuple[str, str]:
     url = "https:%s" % loads(content)['img']
     name = url.split("/")[-1].split(".")[0]
     return url, name
+
+
+def ai() -> tuple[str, str]:
+    """
+    :return: [generated img url, generated img id]
+    """

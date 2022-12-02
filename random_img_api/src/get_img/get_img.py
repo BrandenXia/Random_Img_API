@@ -37,11 +37,11 @@ def download(type: str) -> int:
     # if failed, return exit code
     # 1: download failed
     if rt == 1:
-        print("[bold red]Connection Error")
+        console.print("[bold red]Connection Error")
         return 1
     # 2: failed to get image size
     elif rt == 2:
-        print("[bold red]Failed to get image size")
+        console.print("[bold red]Failed to get image size")
         return 2
     # download canceled
     elif rt == 3:
@@ -87,7 +87,7 @@ def get(type, num):
     elif type == "avatar":
         action = "generate"
     elif type == "ai":
-        action = "download"
+        action = "ai"
     else:
         console.print("[bold red]Unknown type: %s" % type)
         return
@@ -124,6 +124,7 @@ def get(type, num):
             console.print("[bold green]Successfully downloaded 1 image")
         elif count > 1:
             console.print("[bold green]Successfully downloaded %d images" % count)
+
     elif action == "generate":
         # count generate file amount
         # if num is 0, generate forever
@@ -143,3 +144,47 @@ def get(type, num):
             console.print("[bold green]Successfully generated 1 image")
         elif count > 1:
             console.print("[bold green]Successfully generated %d images" % count)
+
+    elif action == "ai":
+        from random_img_api.src.get_img import gen_ai
+        prompt = click.prompt("Please input a description about the image to generate: ", type=str)
+        if prompt:
+            if num == 0:
+                data = gen_ai.generate(prompt)
+            else:
+                data = gen_ai.generate(prompt, num)
+        else:
+            console.print("[bold red]Invalid Prompt")
+            return
+
+        if data is None:
+            console.print("[bold red]AuthenticationError: Please set \"OPENAI_API KEY\"")
+            return
+
+        urls = data[0]
+        name = data[1]
+
+        for i in range(len(urls)):
+            from random_img_api.src.get_img import downloader
+            img_name = "%s-%d.png" % (name, i)
+            rt = downloader.download(urls[i], img_path, img_name)
+
+            if rt == 1:
+                console.print("[bold red]Connection Error")
+            # 2: failed to get image size
+            elif rt == 2:
+                console.print("[bold red]Failed to get image size")
+            # download canceled
+            elif rt == 3:
+                console.print("[bold green]Download canceled")
+                break
+
+            console.print("[cyan]Downloaded image: [bold yellow]%s.jpg[/bold yellow]" % img_name)
+
+            from PIL import Image
+            # insert info into database
+            img_file_path = os.path.join(img_path, img_name)
+            img = Image.open(img_file_path)
+            img_x, img_y = img.size
+            # insert into database
+            dbo.insert(img_name, type, "jpg", img_file_path, img_x, img_y)

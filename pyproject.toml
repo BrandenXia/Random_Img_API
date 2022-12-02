@@ -23,6 +23,7 @@ gunicorn = "^20.1.0"
 uvicorn = "^0.20.0"
 fastapi = "^0.87.0"
 rich = "^12.6.0"
+openai = "^0.25.0"
 
 [tool.poetry.scripts]
 img_api = "random_img_api.img_api_cli:cli"

@@ -100,7 +100,7 @@ Argument:
     - [x] change config using command line
   - [x] change structure of image download
 - [x] make a download progress bar with rich
-- [ ] use ai to generate images
+- [x] use ai to generate images
 - [x] add colored log
 - [x] add more comments
 - [ ] add rsa protection or protection according to ip
@@ -111,3 +111,4 @@ Argument:
   - [x] download wallpaper
   - [x] generate avatar
 - [x] format commit message
+- [ ] build a frontend for managing this api 
