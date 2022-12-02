@@ -147,7 +147,7 @@ def get(type, num):
 
     elif action == "ai":
         from random_img_api.src.get_img import gen_ai
-        prompt = click.prompt("Please input a description about the image to generate: ", type=str)
+        prompt = click.prompt("Please input a description about the image to generate", type=str)
         if prompt:
             if num == 0:
                 data = gen_ai.generate(prompt)
